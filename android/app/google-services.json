@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "557140948458",
+    "firebase_url": "https://mykathaapp.firebaseio.com",
+    "project_id": "mykathaapp",
+    "storage_bucket": "mykathaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557140948458:android:0c5ecefc1cf47d92fcae93",
+        "android_client_info": {
+          "package_name": "com.hellokatha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557140948458-288gngftindomto6f886c8gu7lmlrhsk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hellokatha",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "557140948458-pnf2slt53ugr05g2uqtpr4osiicl83r2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHTDkEMncI5j6Ck9JdBoUZDYFCQj7_pKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557140948458-pnf2slt53ugr05g2uqtpr4osiicl83r2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
