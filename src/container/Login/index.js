@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View,Text} from 'react-native';
+import {View, Text} from 'react-native';
 
-const Login = () => (
+const Login = ({navigation}) => (
   <View>
-    <Text>Login</Text>
+    <Text onPress={() => navigation.navigate('Register')}>Login</Text>
   </View>
 );
 

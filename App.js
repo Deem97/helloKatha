@@ -4,9 +4,7 @@ import {Text, SafeAreaView} from 'react-native';
 import Nav from './src/navigation'
 
 const App = () => (
-  <SafeAreaView>
-    <Text>Hello</Text>
-  </SafeAreaView>
+  <Nav/>
 );
 
 export default App;
