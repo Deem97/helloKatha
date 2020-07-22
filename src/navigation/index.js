@@ -9,8 +9,19 @@ const Stack = createStackNavigator();
 function NavContainer() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#73b12f'},
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}>
+        <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
