@@ -2,7 +2,6 @@
 /**
  * Global App Styles
  */
-import * as color from '../colors';
 import {StyleSheet} from 'react-native';
 
 /* Styles ==================================================================== */
@@ -77,7 +76,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: color.BLACK,
+    backgroundColor: '#000000',
     zIndex: 1,
   },
 
