@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 
 const Login = ({navigation}) => (
-  <View>
+  <SafeAreaView>
     <Text onPress={() => navigation.navigate('Register')}>Login</Text>
-  </View>
+  </SafeAreaView>
 );
 
 export default Login;
