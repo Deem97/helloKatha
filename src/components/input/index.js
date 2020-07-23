@@ -1,6 +1,7 @@
-import React from "react";
-import { TextInput, Text } from "react-native";
-import styles from "./styles";
+/* eslint-disable prettier/prettier */
+import React from 'react';
+import {TextInput, Text} from 'react-native';
+import styles from './styles';
 
 export default ({
   placeholder,
