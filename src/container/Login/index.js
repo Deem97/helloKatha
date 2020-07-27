@@ -8,7 +8,7 @@ import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import {globalStyle} from '../../utility';
 import {Logo, InputField} from '../../components';
 import {Store} from '../../context/store';
-import {LOADING_START, LOADING_STOP} from '../../context/actions/types';
+import {LOADING_START, LOADING_STOP } from '../../context/actions/types';
 
 const Login = ({navigation}) => {
   const globalState = useContext(Store);

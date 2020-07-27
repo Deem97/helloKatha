@@ -1,14 +1,23 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-alert */
 
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import firebase from '../../firebase/config';
 import {globalStyle} from '../../utility';
 import {Logo, InputField} from '../../components';
+import {Store} from '../../context/store';
+import {LOADING_START, LOADING_STOP} from '../../context/actions/types';
+import {setAsyncStorage, keys} from '../../asyncStorage';
+import {setUniqueValue, keyboardVerticalOffset} from '../../utility/constants';
+import {SignUpRequest, AddUser} from '../../network';
 
 const Register = ({navigation}) => {
+  const globalState = useContext(Store);
+  const {dispatchLoaderAction} = globalState;
   const [credentials, setCredentials] = useState({
     userName: '',
     email: '',
@@ -28,7 +37,35 @@ const Register = ({navigation}) => {
     } else if (password !== confirmPassword) {
       alert('Password did not Match');
     } else {
-      alert(JSON.stringify(credentials));
+      dispatchLoaderAction({
+        type: LOADING_START,
+      });
+      SignUpRequest(email, password)
+        .then(() => {
+          let uid = firebase.auth().currentUser.uid;
+          let profileImg = '';
+          AddUser(userName, email, uid, profileImg)
+            .then(() => {
+              setAsyncStorage(keys.uuid, uid);
+              setUniqueValue(uid);
+              dispatchLoaderAction({
+                type: LOADING_STOP,
+              });
+              navigation.replace('Dashboard');
+            })
+            .catch((err) => {
+              dispatchLoaderAction({
+                type: LOADING_STOP,
+              });
+              alert(err);
+            });
+        })
+        .catch((err) => {
+          dispatchLoaderAction({
+            type: LOADING_STOP,
+          });
+          alert(err);
+        });
     }
   };
 
