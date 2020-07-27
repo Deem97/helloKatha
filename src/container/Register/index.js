@@ -18,7 +18,7 @@ const Register = ({navigation}) => {
 
   const {userName, email, password, confirmPassword} = credentials;
 
-  const onLoginPress = () => {
+  const onRegisterPress = () => {
     if (!userName) {
       alert('User Name is Required');
     } else if (!email) {
@@ -48,7 +48,9 @@ const Register = ({navigation}) => {
         <InputField
           placeholder="User Name"
           value={userName}
-          onChangeText={(text) => handleOnChange('userName', text)}></InputField>
+          onChangeText={(text) =>
+            handleOnChange('userName', text)
+          }></InputField>
         <InputField
           placeholder="Email"
           value={email}
@@ -79,7 +81,7 @@ const Register = ({navigation}) => {
           }}>
           <Text
             style={{color: '#FFFFFF', fontSize: 16, fontWeight: '700'}}
-            onPress={() => onLoginPress()}>
+            onPress={() => onRegisterPress()}>
             Sign Up
           </Text>
         </TouchableOpacity>

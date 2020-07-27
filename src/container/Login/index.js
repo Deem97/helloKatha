@@ -3,12 +3,16 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-alert */
 
-import React, {useState} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity, Image} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import {globalStyle} from '../../utility';
 import {Logo, InputField} from '../../components';
+import {Store} from '../../context/store';
+import {LOADING_START, LOADING_STOP} from '../../context/actions/types';
 
 const Login = ({navigation}) => {
+  const globalState = useContext(Store);
+  const {dispatchLoaderAction} = globalState;
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -22,7 +26,14 @@ const Login = ({navigation}) => {
     } else if (!password) {
       alert('Password is Required');
     } else {
-      alert(JSON.stringify(credentials));
+      dispatchLoaderAction({
+        type: LOADING_START,
+      });
+      setTimeout(() => {
+        dispatchLoaderAction({
+          type: LOADING_STOP,
+        });
+      }, 2000);
     }
   };
 
@@ -36,7 +47,7 @@ const Login = ({navigation}) => {
   return (
     <SafeAreaView style={[globalStyle.flex1]}>
       <View style={{marginTop: 42, alignItems: 'center'}}>
-        <Logo/>
+        <Logo />
       </View>
       <View style={[globalStyle.flex2, globalStyle.containerCentered]}>
         <InputField

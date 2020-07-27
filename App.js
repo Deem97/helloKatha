@@ -1,10 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, SafeAreaView} from 'react-native';
-import Nav from './src/navigation'
+import Nav from './src/navigation';
+import {Loader} from './src/components';
+import {StoreProvider} from './src/context/store';
 
 const App = () => (
-  <Nav/>
+  <StoreProvider>
+    <Nav />
+    <Loader />
+  </StoreProvider>
 );
 
 export default App;
