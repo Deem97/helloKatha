@@ -5,20 +5,36 @@
 
 import React, {useState, useContext} from 'react';
 import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import firebase from '../../firebase/config';
 import {globalStyle} from '../../utility';
 import {Logo, InputField} from '../../components';
 import {Store} from '../../context/store';
-import {LOADING_START, LOADING_STOP } from '../../context/actions/types';
+import {LOADING_START, LOADING_STOP} from '../../context/actions/types';
+import {setAsyncStorage, keys} from '../../asyncStorage';
+import {setUniqueValue, keyboardVerticalOffset} from '../../utility/constants';
+import {LoginRequest} from '../../network';
 
 const Login = ({navigation}) => {
   const globalState = useContext(Store);
   const {dispatchLoaderAction} = globalState;
-  const [credentials, setCredentials] = useState({
+  const [credential, setCredential] = useState({
     email: '',
     password: '',
   });
 
-  const {email, password} = credentials;
+  const [logo, toggleLogo] = useState(true);
+  const {email, password} = credential;
+
+  const setInitialState = () => {
+    setCredential({email: '', password: ''});
+  };
+
+  const handleOnChange = (name, value) => {
+    setCredential({
+      ...credential,
+      [name]: value,
+    });
+  };
 
   const onLoginPress = () => {
     if (!email) {
@@ -29,19 +45,44 @@ const Login = ({navigation}) => {
       dispatchLoaderAction({
         type: LOADING_START,
       });
-      setTimeout(() => {
-        dispatchLoaderAction({
-          type: LOADING_STOP,
+      LoginRequest(email, password)
+        .then((res) => {
+          if (!res.additionalUserInfo) {
+            dispatchLoaderAction({
+              type: LOADING_STOP,
+            });
+            alert(res);
+            return;
+          }
+          setAsyncStorage(keys.uuid, res.user.uid);
+          setUniqueValue(res.user.uid);
+          dispatchLoaderAction({
+            type: LOADING_STOP,
+          });
+          setInitialState();
+          navigation.navigate('Dashboard');
+        })
+        .catch((err) => {
+          dispatchLoaderAction({
+            type: LOADING_STOP,
+          });
+          alert(err);
         });
-      }, 2000);
     }
   };
+  // * ON INPUT FOCUS
 
-  const handleOnChange = (name, value) => {
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
+  const handleFocus = () => {
+    setTimeout(() => {
+      toggleLogo(false);
+    }, 200);
+  };
+  // * ON INPUT BLUR
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      toggleLogo(true);
+    }, 200);
   };
 
   return (
