@@ -5,7 +5,16 @@
 /* eslint-disable no-alert */
 
 import React, {useState, useContext} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Keyboard,
+  Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import firebase from '../../firebase/config';
 import {globalStyle} from '../../utility';
 import {Logo, InputField} from '../../components';
@@ -25,9 +34,11 @@ const Register = ({navigation}) => {
     confirmPassword: '',
   });
 
+  const [logo, toggleLogo] = useState(true);
   const {userName, email, password, confirmPassword} = credentials;
 
   const onRegisterPress = () => {
+    Keyboard.dismiss();
     if (!userName) {
       alert('User Name is Required');
     } else if (!email) {
@@ -41,7 +52,14 @@ const Register = ({navigation}) => {
         type: LOADING_START,
       });
       SignUpRequest(email, password)
-        .then(() => {
+        .then((res) => {
+          if (!res.additionalUserInfo) {
+            dispatchLoaderAction({
+              type: LOADING_STOP,
+            });
+            alert(res);
+            return;
+          }
           let uid = firebase.auth().currentUser.uid;
           let profileImg = '';
           AddUser(userName, email, uid, profileImg)
@@ -76,64 +94,90 @@ const Register = ({navigation}) => {
     });
   };
 
-  return (
-    <SafeAreaView style={[globalStyle.flex1]}>
-      <View style={{marginTop: 42, alignItems: 'center'}}>
-        <Logo />
-      </View>
-      <View style={{marginTop: 20, alignItems: 'center'}}>
-        <InputField
-          placeholder="User Name"
-          value={userName}
-          onChangeText={(text) =>
-            handleOnChange('userName', text)
-          }></InputField>
-        <InputField
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => handleOnChange('email', text)}></InputField>
-        <InputField
-          placeholder="Password"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) =>
-            handleOnChange('password', text)
-          }></InputField>
-        <InputField
-          placeholder="Confirm Password"
-          secureTextEntry={true}
-          value={confirmPassword}
-          onChangeText={(text) =>
-            handleOnChange('confirmPassword', text)
-          }></InputField>
-        <TouchableOpacity
-          style={{
-            marginTop: 22,
-            width: 160,
-            backgroundColor: '#6b8e23',
-            borderRadius: 40,
-            height: 52,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{color: '#FFFFFF', fontSize: 16, fontWeight: '700'}}
-            onPress={() => onRegisterPress()}>
-            Sign Up
-          </Text>
-        </TouchableOpacity>
+  // * ON INPUT FOCUS
 
-        <Text style={{marginTop: 12}}>
-          Already have an Account?
-          <Text> </Text>
-          <Text
-            style={{color: '#6b8e23', fontSize: 16, fontWeight: '700'}}
-            onPress={() => navigation.navigate('Login')}>
-            Login
-          </Text>
-        </Text>
-      </View>
-    </SafeAreaView>
+  const handleFocus = () => {
+    setTimeout(() => {
+      toggleLogo(false);
+    }, 200);
+  };
+  // * ON INPUT BLUR
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      toggleLogo(true);
+    }, 200);
+  };
+
+  return (
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={keyboardVerticalOffset}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={[globalStyle.flex1]}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={[globalStyle.flex1]}>
+          {logo && (
+            <View style={{marginTop: 42, alignItems: 'center'}}>
+              <Logo />
+            </View>
+          )}
+          <View style={{marginTop: 20, alignItems: 'center'}}>
+            <InputField
+              placeholder="User Name"
+              value={userName}
+              onChangeText={(text) => handleOnChange('userName', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}></InputField>
+            <InputField
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => handleOnChange('email', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}></InputField>
+            <InputField
+              placeholder="Password"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => handleOnChange('password', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}></InputField>
+            <InputField
+              placeholder="Confirm Password"
+              secureTextEntry={true}
+              value={confirmPassword}
+              onChangeText={(text) => handleOnChange('confirmPassword', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}></InputField>
+            <TouchableOpacity
+              style={{
+                marginTop: 22,
+                width: 160,
+                backgroundColor: '#6b8e23',
+                borderRadius: 40,
+                height: 52,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{color: '#FFFFFF', fontSize: 16, fontWeight: '700'}}
+                onPress={() => onRegisterPress()}>
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={{marginTop: 12}}>
+              Already have an Account?
+              <Text> </Text>
+              <Text
+                style={{color: '#6b8e23', fontSize: 16, fontWeight: '700'}}
+                onPress={() => navigation.navigate('Login')}>
+                Login
+              </Text>
+            </Text>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

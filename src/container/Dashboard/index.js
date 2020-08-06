@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useLayoutEffect} from 'react';
+import React, {useContext, useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {UpdateUser, LogOutUser} from '../../network';
+import {clearAsyncStorage} from '../../asyncStorage';
 
 const Dashboard = ({navigation}) => {
   useLayoutEffect(() => {
@@ -20,7 +22,7 @@ const Dashboard = ({navigation}) => {
               [
                 {
                   text: 'Yes',
-                  onPress: () => alert('Logged Out'),
+                  onPress: () => logout(),
                 },
                 {
                   text: 'No',
@@ -35,9 +37,20 @@ const Dashboard = ({navigation}) => {
       ),
     });
   }, [navigation]);
+  const logout = () => {
+    LogOutUser()
+      .then(() => {
+        clearAsyncStorage()
+          .then(() => {
+            navigation.replace('Login');
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => alert(err));
+  };
   return (
-    <View>
-      <Text>Dashboard</Text>
+    <View style={{alignItems: 'center'}}>
+      <Text style={{fontSize: 20}}>17000254 - Deemantha H.K.T</Text>
     </View>
   );
 };

@@ -5,7 +5,7 @@
 import React, {useContext} from 'react';
 import {
   ActivityIndicator,
-  View,
+  View, 
   StyleSheet,
   Dimensions,
   Platform,

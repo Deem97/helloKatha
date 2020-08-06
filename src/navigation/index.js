@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {Login, Register, Dashboard} from '../container';
+import {Login, Register, Dashboard, Splash} from '../container';
 
 const Stack = createStackNavigator();
 
@@ -10,7 +10,7 @@ function NavContainer() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Splash"
         screenOptions={{
           headerShown: true,
           headerStyle: {backgroundColor: '#73b12f'},
@@ -21,6 +21,11 @@ function NavContainer() {
             fontSize: 20,
           },
         }}>
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Login"
           component={Login}

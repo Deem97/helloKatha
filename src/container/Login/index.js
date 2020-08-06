@@ -4,8 +4,16 @@
 /* eslint-disable no-alert */
 
 import React, {useState, useContext} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
-import firebase from '../../firebase/config';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import {globalStyle} from '../../utility';
 import {Logo, InputField} from '../../components';
 import {Store} from '../../context/store';
@@ -37,6 +45,7 @@ const Login = ({navigation}) => {
   };
 
   const onLoginPress = () => {
+    Keyboard.dismiss();
     if (!email) {
       alert('Email is Required');
     } else if (!password) {
@@ -59,7 +68,7 @@ const Login = ({navigation}) => {
           dispatchLoaderAction({
             type: LOADING_STOP,
           });
-          setInitialState();
+          //setInitialState();
           navigation.navigate('Dashboard');
         })
         .catch((err) => {
@@ -86,50 +95,61 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={[globalStyle.flex1]}>
-      <View style={{marginTop: 42, alignItems: 'center'}}>
-        <Logo />
-      </View>
-      <View style={[globalStyle.flex2, globalStyle.containerCentered]}>
-        <InputField
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => handleOnChange('email', text)}></InputField>
-        <InputField
-          placeholder="Password"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) =>
-            handleOnChange('password', text)
-          }></InputField>
-        <TouchableOpacity
-          style={{
-            marginTop: 22,
-            width: 160,
-            backgroundColor: '#6b8e23',
-            borderRadius: 40,
-            height: 52,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{color: '#FFFFFF', fontSize: 16, fontWeight: '700'}}
-            onPress={() => onLoginPress()}>
-            Sign In
-          </Text>
-        </TouchableOpacity>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={keyboardVerticalOffset}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={[globalStyle.flex1]}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={[globalStyle.flex1]}>
+          {logo && (
+            <View style={{marginTop: 42, alignItems: 'center'}}>
+              <Logo />
+            </View>
+          )}
+          <View style={[globalStyle.flex2, globalStyle.containerCentered]}>
+            <InputField
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => handleOnChange('email', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}></InputField>
+            <InputField
+              placeholder="Password"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => handleOnChange('password', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}></InputField>
+            <TouchableOpacity
+              style={{
+                marginTop: 22,
+                width: 160,
+                backgroundColor: '#6b8e23',
+                borderRadius: 40,
+                height: 52,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{color: '#FFFFFF', fontSize: 16, fontWeight: '700'}}
+                onPress={() => onLoginPress()}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
 
-        <Text style={{marginTop: 12}}>
-          Don't have an Account?
-          <Text> </Text>
-          <Text
-            style={{color: '#6b8e23', fontSize: 16, fontWeight: '700'}}
-            onPress={() => navigation.navigate('Register')}>
-            Sign Up
-          </Text>
-        </Text>
-      </View>
-    </SafeAreaView>
+            <Text style={{marginTop: 12}}>
+              Don't have an Account?
+              <Text> </Text>
+              <Text
+                style={{color: '#6b8e23', fontSize: 16, fontWeight: '700'}}
+                onPress={() => navigation.navigate('Register')}>
+                Sign Up
+              </Text>
+            </Text>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
