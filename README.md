@@ -11,3 +11,10 @@
 
 2) If the system prompts you "You may not have a proper app for viewing this content". You can go to device's file manger and view downloaded apk and intsall it.
 
+**How to Use**
+
+- After a successfull installation user can register to the app by providing user name,email and a password. 
+- Then user redirect to the home screen and at there user can view all the users and by tapping on them user can chat with them. 
+- At the home screen if user wants to update profile picture user can do it.
+- If user wants to log out from the system user can do it from the home screen and if the user wants to log in again by providing email and password user can log in to the system.
+
