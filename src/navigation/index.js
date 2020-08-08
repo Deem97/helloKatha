@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {Login, Register, Dashboard, Splash} from '../container';
+import {Login, Register, Dashboard, Splash, Chat} from '../container';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +40,13 @@ function NavContainer() {
           name="Dashboard"
           component={Dashboard}
           options={{headerLeft: null}}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{
+            headerBackTitle: null,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
