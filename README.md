@@ -54,7 +54,3 @@ Added
 - local.properties file to android folder
 
 Those files are separately added with the submission.
-
-
-
-

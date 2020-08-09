@@ -144,7 +144,7 @@ const Chat = ({ route, navigation }) => {
               <View style={styles.sendBtnContainer}>
                 <MaterialCommunityIcons
                   name="camera"
-                  color={color.WHITE}
+                  color='#000000'
                   size={appStyle.fieldHeight}
                   onPress={() => handleCamera()}
                 />

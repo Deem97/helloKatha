@@ -3,17 +3,17 @@ import {color} from '../../utility';
 
 export default StyleSheet.create({
   cardStyle: {
-    marginHorizontal:12,
-    marginBottom:12,
-    borderRadius:30
+    marginHorizontal: 12,
+    marginBottom: 12,
+    height: 60,
   },
   cardItemStyle: {
     backgroundColor: '#dce775',
   },
 
   logoContainer: {
-    marginTop:5,
-    marginLeft:10,
+    marginTop: 6,
+    marginLeft: 10,
     height: 60,
     width: 60,
     borderColor: '#FFFFFF',
@@ -24,5 +24,11 @@ export default StyleSheet.create({
     backgroundColor: '#93e5b6',
   },
   thumbnailName: {fontSize: 30, color: '#FFFFFF', fontWeight: 'bold'},
-  profileName: {fontSize: 20, color: '#000000', fontWeight: 'bold',marginLeft:10},
+  profileName: {
+    fontSize: 20,
+    color: '#000000',
+    fontWeight: 'bold',
+    marginLeft: 150,
+    marginTop: -20,
+  },
 });

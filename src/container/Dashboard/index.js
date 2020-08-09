@@ -1,32 +1,39 @@
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, Alert, FlatList,SafeAreaView} from 'react-native';
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import {
+  View,
+  Text,
+  Alert,
+  FlatList,
+  SafeAreaView,
+  TextInput,
+} from 'react-native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import ImagePicker from 'react-native-image-picker';
 import {Profile, ShowUsers, StickyHeader} from '../../components';
 import firebase from '../../firebase/config';
 import {Store} from '../../context/store';
 import {UpdateUser, LogOutUser} from '../../network';
 import {clearAsyncStorage} from '../../asyncStorage';
-import { deviceHeight } from "../../utility/styleHelper/appStyle";
+import {deviceHeight} from '../../utility/styleHelper/appStyle';
 import {LOADING_STOP, LOADING_START} from '../../context/actions/types';
 import {uuid, smallDeviceHeight} from '../../utility/constants';
 
 const Dashboard = ({navigation}) => {
-
   const globalState = useContext(Store);
-  const { dispatchLoaderAction } = globalState;
+  const {dispatchLoaderAction} = globalState;
 
   const [userDetail, setUserDetail] = useState({
-    id: "",
-    name: "",
-    profileImg: "",
+    id: '',
+    name: '',
+    profileImg: '',
   });
 
   const [getScrollPosition, setScrollPosition] = useState(0);
   const [allUsers, setAllUsers] = useState([]);
-  const { profileImg, name } = userDetail;
+  const {profileImg, name} = userDetail;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,13 +73,13 @@ const Dashboard = ({navigation}) => {
     try {
       firebase
         .database()
-        .ref("users")
-        .on("value", (dataSnapshot) => {
+        .ref('users')
+        .on('value', (dataSnapshot) => {
           let users = [];
           let currentUser = {
-            id: "",
-            name: "",
-            profileImg: "",
+            id: '',
+            name: '',
+            profileImg: '',
           };
           dataSnapshot.forEach((child) => {
             if (uuid === child.val().uuid) {
@@ -85,7 +92,7 @@ const Dashboard = ({navigation}) => {
                 name: child.val().name,
                 profileImg: child.val().profileImg,
               });
-            } 
+            }
           });
           setUserDetail(currentUser);
           setAllUsers(users);
@@ -109,17 +116,17 @@ const Dashboard = ({navigation}) => {
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-      console.log("Response = ", response);
+      console.log('Response = ', response);
 
       if (response.didCancel) {
-        console.log("User cancelled photo picker");
+        console.log('User cancelled photo picker');
       } else if (response.error) {
-        console.log("ImagePicker Error: ", response.error);
+        console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log("User tapped custom button: ", response.customButton);
+        console.log('User tapped custom button: ', response.customButton);
       } else {
         // Base 64 image:
-        let source = "data:image/jpeg;base64," + response.data;
+        let source = 'data:image/jpeg;base64,' + response.data;
         dispatchLoaderAction({
           type: LOADING_START,
         });
@@ -145,14 +152,14 @@ const Dashboard = ({navigation}) => {
 
   const nameTap = (profileImg, name, guestUserId) => {
     if (!profileImg) {
-      navigation.navigate("Chat", {
+      navigation.navigate('Chat', {
         name,
         imgText: name.charAt(0),
         guestUserId,
         currentUserId: uuid,
       });
     } else {
-      navigation.navigate("Chat", {
+      navigation.navigate('Chat', {
         name,
         img: profileImg,
         guestUserId,
@@ -161,9 +168,9 @@ const Dashboard = ({navigation}) => {
     }
   };
 
-  const selectNameTapped = () =>{
-    console.log(name)
-  }
+  const selectNameTapped = () => {
+    console.log(name);
+  };
 
   const logout = () => {
     LogOutUser()
@@ -187,27 +194,25 @@ const Dashboard = ({navigation}) => {
 
   return (
     <SafeAreaView>
-      <View style={{alignItems:'center'}}> 
-        <Text style={{fontSize:20}}>17000254 -Deemantha H.K.T</Text>
+      <View style={{alignItems: 'center'}}>
+        <Text style={{fontSize: 20}}>17000254 -Deemantha H.K.T</Text>
       </View>
       <FlatList
-         alwaysBounceVertical={false}
-         data={allUsers}
-         keyExtractor={(_, index) => index.toString()}
-         onScroll={(event) =>
-           setScrollPosition(event.nativeEvent.contentOffset.y)
-         }
-         ListHeaderComponent={
-             <Profile
-               img={profileImg}
-               onImgTap={() => imgTap(profileImg, name)}
-               onEditImgTap={() => selectPhotoTapped()}
-               onEditNameTap={() => selectNameTapped()}
-               name={name}
-             />
-         }
-
-         renderItem={({ item }) => (
+        alwaysBounceVertical={false}
+        data={allUsers}
+        keyExtractor={(_, index) => index.toString()}
+        onScroll={(event) =>
+          setScrollPosition(event.nativeEvent.contentOffset.y)
+        }
+        ListHeaderComponent={
+          <Profile
+            img={profileImg}
+            onEditImgTap={() => selectPhotoTapped()}
+            onEditNameTap={() => selectNameTapped()}
+            name={name}
+          />
+        }
+        renderItem={({item}) => (
           <ShowUsers
             name={item.name}
             img={item.profileImg}
