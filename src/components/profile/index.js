@@ -16,7 +16,7 @@ export default ({img, name, onEditImgTap}) => (
             style={[
               globalStyle.sectionCentered,
               styles.img,
-              {backgroundColor: '#93e5b6'},
+              {backgroundColor: '#93e5b8'},
             ]}>
             <Text style={styles.name}>{name.charAt(0)}</Text>
           </View>
